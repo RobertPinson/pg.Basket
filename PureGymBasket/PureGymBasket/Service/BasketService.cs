@@ -33,7 +33,7 @@ namespace pg.Basket.Bll.Service
         public Dal.Entity.Basket RedeemGiftVoucher(Guid basketId, GiftVoucher giftVoucher)
         {
             var basket = _basketRepository.Get(basketId);
-            basket.AddGiftVoucher(giftVoucher);
+            basket.AddVoucher(giftVoucher);
             return basket;
         }
     }
