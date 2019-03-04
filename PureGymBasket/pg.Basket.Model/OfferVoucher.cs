@@ -73,7 +73,7 @@ namespace pg.Basket.Model
             }
             else
             {
-                result = Value;
+                result = discountableBasketTotal >= Value ? Value : discountableBasketTotal;
             }
 
             return result;
