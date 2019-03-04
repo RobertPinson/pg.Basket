@@ -1,4 +1,4 @@
-﻿namespace pg.Basket.Dal.Entity
+﻿namespace pg.Basket.Entity
 {
     public abstract class BaseVoucher
     {

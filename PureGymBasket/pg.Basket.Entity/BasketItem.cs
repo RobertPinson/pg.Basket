@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace pg.Basket.Dal.Entity
+namespace pg.Basket.Entity
 {
     public class BasketItem
     {

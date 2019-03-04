@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace pg.Basket.Dal.Entity
+namespace pg.Basket.Model
 {
     public class Basket
     {

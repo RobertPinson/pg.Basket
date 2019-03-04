@@ -11,7 +11,7 @@ namespace pg.Basket.Dal.Migrations
                 name: "basket");
 
             migrationBuilder.CreateSequence(
-                name: "orderitemseq",
+                name: "basketitemseq",
                 incrementBy: 10);
 
             migrationBuilder.CreateSequence(
@@ -39,7 +39,7 @@ namespace pg.Basket.Dal.Migrations
                     Id = table.Column<int>(nullable: false),
                     ProductId = table.Column<int>(nullable: false),
                     BasketId = table.Column<int>(nullable: false),
-                    CategoryId = table.Column<string>(nullable: false),
+                    CategoryId = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
                     UnitPrice = table.Column<decimal>(nullable: false)
@@ -106,7 +106,7 @@ namespace pg.Basket.Dal.Migrations
                 schema: "basket");
 
             migrationBuilder.DropSequence(
-                name: "orderitemseq");
+                name: "basketitemseq");
 
             migrationBuilder.DropSequence(
                 name: "orderseq",

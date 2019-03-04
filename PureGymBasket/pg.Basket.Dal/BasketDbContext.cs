@@ -1,32 +1,49 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using pg.Basket.Dal.Entity;
+using pg.Basket.Model;
 
 namespace pg.Basket.Dal
 {
-    public partial class BasketDbContext : DbContext, IBasketDbContext
+    public class BasketDbContext : DbContext, IBasketDbContext
     {
         public BasketDbContext(DbContextOptions<BasketDbContext> options) : base(options)
         {
 
         }
 
-        public const string DEFAULT_SCHEMA = "basket";
+        public const string DefaultSchema = "basket";
 
-        public DbSet<Entity.Basket> Baskets { get; set; }
+        public DbSet<Model.Basket> Baskets { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
         public DbSet<BaseVoucher> Vouchers { get; set; }
+        public DbSet<GiftVoucher> GiftVouchers { get; set; }
+        public DbSet<OfferVoucher> OfferVouchers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<GiftVoucher>();
-            modelBuilder.Entity<OfferVoucher>();
-
             modelBuilder.ApplyConfiguration(new BasketEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new BasketItemEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new VoucherEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new GiftVoucherEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new OfferVoucherEntityTypeConfiguration());
+        }
+    }
+
+    public class GiftVoucherEntityTypeConfiguration : IEntityTypeConfiguration<GiftVoucher>
+    {
+        public void Configure(EntityTypeBuilder<GiftVoucher> giftVoucherConfiguration)
+        {
+            giftVoucherConfiguration.ToTable("giftvouchers", BasketDbContext.DefaultSchema);
+        }
+    }
+
+    public class OfferVoucherEntityTypeConfiguration : IEntityTypeConfiguration<OfferVoucher>
+    {
+        public void Configure(EntityTypeBuilder<OfferVoucher> offerVoucherConfiguration)
+        {
+            offerVoucherConfiguration.ToTable("offervouchers", BasketDbContext.DefaultSchema);
         }
     }
 
@@ -34,7 +51,7 @@ namespace pg.Basket.Dal
     {
         public void Configure(EntityTypeBuilder<BaseVoucher> voucherConfiguration)
         {
-            voucherConfiguration.ToTable("vouchers", BasketDbContext.DEFAULT_SCHEMA);
+            voucherConfiguration.ToTable("vouchers", BasketDbContext.DefaultSchema);
 
             voucherConfiguration.HasKey(v => v.Id);
         }
@@ -44,12 +61,12 @@ namespace pg.Basket.Dal
     {
         public void Configure(EntityTypeBuilder<BasketItem> basketItemConfiguration)
         {
-            basketItemConfiguration.ToTable("basketItems", BasketDbContext.DEFAULT_SCHEMA);
+            basketItemConfiguration.ToTable("basketItems", BasketDbContext.DefaultSchema);
 
             basketItemConfiguration.HasKey(b => b.Id);
 
             basketItemConfiguration.Property(o => o.Id)
-                .ForSqlServerUseSequenceHiLo("orderitemseq");
+                .ForSqlServerUseSequenceHiLo("basketitemseq");
 
             basketItemConfiguration.Property<int>("BasketId")
                 .IsRequired();
@@ -58,36 +75,40 @@ namespace pg.Basket.Dal
                 .IsRequired();
 
             basketItemConfiguration.Property<string>("Description")
+                .HasField("_description")
                 .IsRequired();
 
-            basketItemConfiguration.Property<string>("CategoryId")
+            basketItemConfiguration.Property<int>("CategoryId")
+                .HasField("_categoryId")
                 .IsRequired();
 
             basketItemConfiguration.Property<decimal>("UnitPrice")
+                .HasField("_unitPrice")
                 .IsRequired();
 
             basketItemConfiguration.Property<int>("Quantity")
+                .HasField("_quantity")
                 .IsRequired();
         }
     }
 
-    public class BasketEntityTypeConfiguration : IEntityTypeConfiguration<Entity.Basket>
+    public class BasketEntityTypeConfiguration : IEntityTypeConfiguration<Model.Basket>
     {
-        public void Configure(EntityTypeBuilder<Entity.Basket> basketConfiguration)
+        public void Configure(EntityTypeBuilder<Model.Basket> basketConfiguration)
         {
-            basketConfiguration.ToTable("baskets", BasketDbContext.DEFAULT_SCHEMA);
+            basketConfiguration.ToTable("baskets", BasketDbContext.DefaultSchema);
 
             basketConfiguration.HasKey(b => b.Id);
 
             basketConfiguration.Ignore(b => b.VoucherNotAppliedMessage);
 
             basketConfiguration.Property(o => o.Id)
-                .ForSqlServerUseSequenceHiLo("orderseq", BasketDbContext.DEFAULT_SCHEMA);
+                .ForSqlServerUseSequenceHiLo("orderseq", BasketDbContext.DefaultSchema);
 
-            var navigation = basketConfiguration.Metadata.FindNavigation(nameof(Entity.Basket.BasketItems));
+            var navigation = basketConfiguration.Metadata.FindNavigation(nameof(Model.Basket.BasketItems));
             navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
 
-            var voucherNavigation = basketConfiguration.Metadata.FindNavigation(nameof(Entity.Basket.Vouchers));
+            var voucherNavigation = basketConfiguration.Metadata.FindNavigation(nameof(Model.Basket.Vouchers));
             voucherNavigation.SetPropertyAccessMode(PropertyAccessMode.Field);
             
             basketConfiguration.HasMany(b => b.Vouchers)

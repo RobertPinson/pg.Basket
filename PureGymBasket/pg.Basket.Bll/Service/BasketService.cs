@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
-using pg.Basket.Bll.Interface;
+﻿using pg.Basket.Bll.Interface;
 using pg.Basket.Dal;
-using pg.Basket.Dal.Entity;
+using pg.Basket.Model;
 
 namespace pg.Basket.Bll.Service
 {
@@ -15,22 +13,30 @@ namespace pg.Basket.Bll.Service
             _basketRepository = basketRepository;
         }
 
-        public Dal.Entity.Basket CreateBasket()
+        public Model.Basket CreateBasket()
         {
-            var basket = new Dal.Entity.Basket();
+            var basket = new Model.Basket();
 
             _basketRepository.Add(basket);
             return basket;
         }
 
-        public Dal.Entity.Basket AddItem(Guid basketId, BasketItem basketItem)
+        public Model.Basket AddItem(int basketId, BasketItem basketItem)
         {
             var basket = _basketRepository.Get(basketId);
             basket.AddBasketItem(basketItem);
             return basket;
         }
 
-        public Dal.Entity.Basket RedeemGiftVoucher(Guid basketId, GiftVoucher giftVoucher)
+        public Model.Basket RemoveItem(int basketId, BasketItem basketItem)
+        {
+            var basket = _basketRepository.Get(basketId);
+            basket.RemoveBasketItem(basketItem);
+            _basketRepository.Update(basket);
+            return basket;
+        }
+
+        public Model.Basket RedeemGiftVoucher(int basketId, GiftVoucher giftVoucher)
         {
             var basket = _basketRepository.Get(basketId);
             basket.AddVoucher(giftVoucher);

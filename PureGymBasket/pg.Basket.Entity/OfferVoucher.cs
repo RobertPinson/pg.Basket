@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace pg.Basket.Dal.Entity
+namespace pg.Basket.Entity
 {
     public class OfferVoucher : BaseVoucher
     {
@@ -15,7 +15,7 @@ namespace pg.Basket.Dal.Entity
             OfferProductIds = offerProductIds;
         }
 
-        public override bool Validate(Basket basket)
+        public override bool Validate(pg.Basket.Entity.Basket basket)
         {
             if (basket.Vouchers.OfType<OfferVoucher>().Any())
             {
@@ -51,7 +51,7 @@ namespace pg.Basket.Dal.Entity
             return true;
         }
 
-        public override decimal CalculateDiscount(Basket basket)
+        public override decimal CalculateDiscount(pg.Basket.Entity.Basket basket)
         {
             if (!this.Validate(basket))
             {

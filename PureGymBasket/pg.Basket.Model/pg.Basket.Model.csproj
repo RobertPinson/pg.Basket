@@ -4,8 +4,4 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\pg.Basket.Dal\pg.Basket.Dal.csproj" />
-  </ItemGroup>
-
 </Project>

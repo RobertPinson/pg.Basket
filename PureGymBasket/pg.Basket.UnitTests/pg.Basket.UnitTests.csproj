@@ -11,13 +11,15 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Moq" Version="4.10.1" />
     <PackageReference Include="nunit" Version="3.10.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\pg.Basket.Dal\pg.Basket.Dal.csproj" />
+    <ProjectReference Include="..\pg.Basket.Bll\pg.Basket.Bll.csproj" />
+    <ProjectReference Include="..\pg.Basket.Model\pg.Basket.Model.csproj" />
   </ItemGroup>
 
 </Project>

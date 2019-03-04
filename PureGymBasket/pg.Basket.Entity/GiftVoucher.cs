@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace pg.Basket.Dal.Entity
+namespace pg.Basket.Entity
 {
     public class GiftVoucher : BaseVoucher
     {
@@ -12,13 +12,13 @@ namespace pg.Basket.Dal.Entity
         {
         }
 
-        public override bool Validate(Basket basket)
+        public override bool Validate(pg.Basket.Entity.Basket basket)
         {
             //TODO add any Gift voucher validation code here
             return true;
         }
 
-        public override decimal CalculateDiscount(Basket basket)
+        public override decimal CalculateDiscount(pg.Basket.Entity.Basket basket)
         {
             decimal result = 0;
 
